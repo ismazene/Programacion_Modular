@@ -17,6 +17,14 @@ public class Ejercicio3 {
 
     }
 
+    /**
+     * @author Ismael
+     * @version 1.0
+     * Metodo pasar a mayasculas a una cadena
+     * @param
+     * @return
+     */
+
     public static String mayusculas(String cadena){
 
         return cadena.toUpperCase();

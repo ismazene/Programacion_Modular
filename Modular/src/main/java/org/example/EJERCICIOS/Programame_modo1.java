@@ -11,7 +11,7 @@
             teclado = new Scanner(System.in);
 
             int numCasos = teclado.nextInt();
-            teclado.nextLine(); // consumir salto de línea
+            teclado.nextLine();
 
             for (int i = 0; i < numCasos; i++)
                 casoDePrueba();
