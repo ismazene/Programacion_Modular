@@ -18,15 +18,39 @@ public class Jardines_Bonito {
         Scanner teclado = new Scanner(System.in);
 
         // Leer filas y columnas mientras haya datos
+        System.out.println("*************************************");
+        System.out.println("★ BIENVENIDO AL CORTACESPED CON GPS ★");
+        System.out.println("*************************************");
+
+        System.out.println("");
+        System.out.println("Porfavor introduce el numero de filas y columnas que tiene tu jardin :)");
+
+        //Esto podria ser un metodo en el que se verifique todo hay que verlo en casa
         while (teclado.hasNext()) {
-            int filas = teclado.nextInt();
-            int columnas = teclado.nextInt();
+
+            int filas = 0;
+            try {
+                filas = teclado.nextInt();
+            } catch (Exception e) {
+                System.err.println("EL formato es incorrecto");
+                return;
+            }
+
+            int columnas = 0;
+            try {
+                columnas = teclado.nextInt();
+            } catch (Exception e) {
+                System.err.println("El formato es incorrecto");
+                return;
+            }
+
 
             // Crear la matriz
             char[][] jardin = new char[filas][columnas];
 
             teclado.nextLine();
 
+            ///Esto podria ser un metodo (no????)
             // Llenar las filas y columans del jardin (la matriz)
             for (int i = 0; i < filas; i++) {
                 char[] filaJardin = teclado.nextLine().toCharArray();
@@ -60,8 +84,9 @@ public class Jardines_Bonito {
      * @param columna Columna en la que se encuentra la celda de césped
      */
     static void verificar(char[][] jardin, int fila, int columna) {
-        // Comparar el rango de cesped (si no es ceped) si cualquiera de estas es true salta el return
-        if (fila < 0 || fila == jardin.length || columna < 0 || columna == jardin[fila].length || jardin[fila][columna] != '#') {
+        // Verificacion de donde esta el ceped en la matriz o jardin
+        if (fila < 0 || fila == jardin.length || columna < 0 ||
+        columna == jardin[fila].length || jardin[fila][columna] != '#') {
             return;
         }
 

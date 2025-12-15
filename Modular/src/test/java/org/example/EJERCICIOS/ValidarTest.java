@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ValidarTest {
 
-    // Método a probar
+    // Metodo a probar
     int suma_3() {
         return 16;
     }
@@ -18,7 +18,7 @@ class ValidarTest {
 
     @Test
     void validar_test() {
-        // Aquí deberías probar el método validar() cuando exista
+        // Aquí deberías probar el metodo validar() cuando exista
         // Por ahora lo dejo vacío para que no falle
     }
 }
