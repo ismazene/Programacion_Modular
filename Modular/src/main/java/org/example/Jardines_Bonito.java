@@ -3,100 +3,166 @@ package org.example;
 import java.util.Scanner;
 
 /**
- * Los jardines de La Alhambra (769)
+ * Los jardines de La Alhambra
  *
- * @author Ismael
- * @version 1.0
+ * Programa que calcula cuantos cortacespedes se necesitan
+ *
+ * Autor: Ismael Zeneddine Ouahidi
+ * Version: 1.1
  */
 public class Jardines_Bonito {
 
     /**
-     * Metodo principal, lee las filas y columnas y calcula donde esta el cesped.
+     * Metodo principal que ejecuta el programa.
+     * Muestra mensajes de bienvenida, pide al usuario el tamanio del jardin,
+     * llama a los metodos y dice cuantos cortacespedes se necesitan
+     *
      */
     public static void main(String[] args) {
 
         Scanner teclado = new Scanner(System.in);
 
-        // Leer filas y columnas mientras haya datos
+        // Mensaje de bienvenida
         System.out.println("*************************************");
         System.out.println("★ BIENVENIDO AL CORTACESPED CON GPS ★");
         System.out.println("*************************************");
 
-        System.out.println("");
-        System.out.println("Porfavor introduce el numero de filas y columnas que tiene tu jardin :)");
-
-        //Esto podria ser un metodo en el que se verifique todo hay que verlo en casa
-        while (teclado.hasNext()) {
+        // Leer casos mientras haya datos
+        while (true) {
 
             int filas = 0;
-            try {
-                filas = teclado.nextInt();
-            } catch (Exception e) {
-                System.err.println("EL formato es incorrecto");
-                return;
-            }
-
             int columnas = 0;
-            try {
-                columnas = teclado.nextInt();
-            } catch (Exception e) {
-                System.err.println("El formato es incorrecto");
-                return;
-            }
 
-
-            // Crear la matriz
-            char[][] jardin = new char[filas][columnas];
-
-            teclado.nextLine();
-
-            ///Esto podria ser un metodo (no????)
-            // Llenar las filas y columans del jardin (la matriz)
-            for (int i = 0; i < filas; i++) {
-                char[] filaJardin = teclado.nextLine().toCharArray();
-                for (int j = 0; j < columnas; j++) {
-                    jardin[i][j] = filaJardin[j];
-                }
-            }
-
-            // Contador
-            int cortacesped = 0;
-
-            // Recorrer la matriz para contar las zonas de cesped
-            for (int i = 0; i < filas; i++) {
-                for (int j = 0; j < columnas; j++) {
-                    if (jardin[i][j] == '#') {
-                        cortacesped++;
-                        verificar(jardin, i, j);
+            // Leer filas y columnas con reintentos
+            boolean valido = false;
+            while (!valido) {
+                System.out.println("Introduce el numero de filas y columnas:");
+                try {
+                    filas = teclado.nextInt();
+                    columnas = teclado.nextInt();
+                    teclado.nextLine(); // limpiar buffer
+                    if (filas < 2 || filas > 100 || columnas < 2 || columnas > 100) {
+                        System.err.println("Las filas y columnas deben estar entre 2 y 100.");
+                    } else {
+                        valido = true;
                     }
+                } catch (Exception e) {
+                    System.err.println("ERROR: Introduce numeros enteros validos.");
+                    teclado.nextLine(); // limpiar buffer
                 }
             }
 
-            System.out.println(cortacesped);
+            // Leer la matriz del jardin
+            char[][] jardin = leerJardin(teclado, filas, columnas);
+
+            // Contar cortacespedes
+            int cortacesped = contarCesped(jardin, filas, columnas);
+
+            // Mostrar resultado
+            System.out.println("Numero de cortacespedes necesarios: " + cortacesped);
+            System.out.println("****************************************");
         }
     }
 
     /**
-     * Metodo para mirar todas las celdas conectadas con cesped
+     * Metodo para leer la matriz del jardin.
+     * Pide al usuario cada fila hasta que sea valida.
      *
-     * @param jardin La matriz total
-     * @param fila Fila en la que se encuentra la celda de cesped
-     * @param columna Columna en la que se encuentra la celda de césped
+     * @param teclado Scanner para leer la entrada del usuario
+     * @param filas numero de filas del jardin
+     * @param columnas numero de columnas del jardin
+     *
+     * @return matriz del jardin
      */
-    static void verificar(char[][] jardin, int fila, int columna) {
-        // Verificacion de donde esta el ceped en la matriz o jardin
-        if (fila < 0 || fila == jardin.length || columna < 0 ||
-        columna == jardin[fila].length || jardin[fila][columna] != '#') {
-            return;
+    public static char[][] leerJardin(Scanner teclado, int filas, int columnas) {
+        char[][] jardin = new char[filas][columnas];
+
+        for (int i = 0; i < filas; i++) {
+            boolean filaValida = false;
+            while (!filaValida) {
+                System.out.println("Introduce la fila " + (i + 1) + " solo (#) o (.) " + columnas + " caracteres):");
+                String linea = teclado.nextLine();
+
+                if (linea.length() != columnas) {
+                    System.err.println("ERROR: La fila debe tener exactamente " + columnas);
+                    continue;
+                }
+
+                // Validar que solo haya '#' o '.'
+                boolean soloCaracteresValidos = true;
+                for (char caracter : linea.toCharArray()) {
+                    if (caracter != '#' && caracter != '.') {
+                        soloCaracteresValidos = false;
+                        break;
+                    }
+                }
+
+                if (!soloCaracteresValidos) {
+                    System.err.println("ERROR: Solo se permiten (#) o (.) en la fila.");
+                } else {
+                    jardin[i] = linea.toCharArray();
+                    filaValida = true;
+                }
+            }
         }
 
-        // Marcar la celda como visitada
-        jardin[fila][columna] = '.';
+        return jardin;
+    }
 
-        // Explorar las celdas arriba, abajo, izquierda, derecha
-        verificar(jardin, fila + 1, columna);
-        verificar(jardin, fila - 1, columna);
-        verificar(jardin, fila, columna + 1);
-        verificar(jardin, fila, columna - 1);
+    /**
+     * Metodo para contar cuantos cortacespedes se necesitan
+     *
+     * @param jardin matriz del jardin
+     * @param filas numero de filas del jardin
+     * @param columnas numero de columnas del jardin
+     *
+     * @return numero de cortacespedes necesarios
+     */
+    public static int contarCesped(char[][] jardin, int filas, int columnas) {
+        int cortacesped = 0;
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (jardin[i][j] == '#') {
+                    cortacesped++;
+                    jardin[i][j] = '.';
+
+                    boolean encontrado = true;
+                    while (encontrado) {
+                        encontrado = false;
+                        for (int filaActual = 0; filaActual < filas; filaActual++) {
+                            for (int columnaActual = 0; columnaActual < columnas; columnaActual++) {
+                                if (jardin[filaActual][columnaActual] == '#') {
+                                    for (int posicion = 0; posicion < 4; posicion++) {
+                                        boolean borrar = false;
+                                        switch (posicion) {
+                                            case 0: // arriba
+                                                if (filaActual > 0 && jardin[filaActual - 1][columnaActual] == '.') borrar = true;
+                                                break;
+                                            case 1: // abajo
+                                                if (filaActual < filas - 1 && jardin[filaActual + 1][columnaActual] == '.') borrar = true;
+                                                break;
+                                            case 2: // izquierda
+                                                if (columnaActual > 0 && jardin[filaActual][columnaActual - 1] == '.') borrar = true;
+                                                break;
+                                            case 3: // derecha
+                                                if (columnaActual < columnas - 1 && jardin[filaActual][columnaActual + 1] == '.') borrar = true;
+                                                break;
+                                        }
+                                        if (borrar) {
+                                            jardin[filaActual][columnaActual] = '.';
+                                            encontrado = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return cortacesped;
     }
 }
