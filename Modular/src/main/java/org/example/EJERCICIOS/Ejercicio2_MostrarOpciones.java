@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Ejercicio2_MostrarOpciones {
     static void main() {
-
         Scanner teclado = new Scanner(System.in);
+
 
         imprimirMenu();
         char opcion = teclado.next().charAt(0);
