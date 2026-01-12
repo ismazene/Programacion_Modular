@@ -40,7 +40,7 @@ public class Jardines_Bonito {
                 try {
                     filas = teclado.nextInt();
                     columnas = teclado.nextInt();
-                    teclado.nextLine(); // limpiar buffer
+                    teclado.nextLine();
                     if (filas < 2 || filas > 100 || columnas < 2 || columnas > 100) {
                         System.err.println("Las filas y columnas deben estar entre 2 y 100.");
                     } else {
@@ -48,7 +48,7 @@ public class Jardines_Bonito {
                     }
                 } catch (Exception e) {
                     System.err.println("ERROR: Introduce numeros enteros validos.");
-                    teclado.nextLine(); // limpiar buffer
+                    teclado.nextLine();
                 }
             }
 
@@ -80,7 +80,6 @@ public class Jardines_Bonito {
         for (int i = 0; i < filas; i++) {
             boolean filaValida = false;
             while (!filaValida) {
-                System.out.println("Introduce la fila " + (i + 1) + " solo (#) o (.) " + columnas + " caracteres):");
                 String linea = teclado.nextLine();
 
                 if (linea.length() != columnas) {
@@ -132,21 +131,31 @@ public class Jardines_Bonito {
                         encontrado = false;
                         for (int filaActual = 0; filaActual < filas; filaActual++) {
                             for (int columnaActual = 0; columnaActual < columnas; columnaActual++) {
+
                                 if (jardin[filaActual][columnaActual] == '#') {
                                     for (int posicion = 0; posicion < 4; posicion++) {
                                         boolean borrar = false;
+
                                         switch (posicion) {
                                             case 0: // arriba
-                                                if (filaActual > 0 && jardin[filaActual - 1][columnaActual] == '.') borrar = true;
+                                                if (filaActual > 0 && jardin[filaActual - 1][columnaActual] == '.'){
+                                                    borrar = true;
+                                                }
                                                 break;
                                             case 1: // abajo
-                                                if (filaActual < filas - 1 && jardin[filaActual + 1][columnaActual] == '.') borrar = true;
+                                                if (filaActual < filas - 1 && jardin[filaActual + 1][columnaActual] == '.'){
+                                                    borrar = true;
+                                                }
                                                 break;
                                             case 2: // izquierda
-                                                if (columnaActual > 0 && jardin[filaActual][columnaActual - 1] == '.') borrar = true;
+                                                if (columnaActual > 0 && jardin[filaActual][columnaActual - 1] == '.'){
+                                                    borrar = true;
+                                                }
                                                 break;
                                             case 3: // derecha
-                                                if (columnaActual < columnas - 1 && jardin[filaActual][columnaActual + 1] == '.') borrar = true;
+                                                if (columnaActual < columnas - 1 && jardin[filaActual][columnaActual + 1] == '.'){
+                                                    borrar = true;
+                                                }
                                                 break;
                                         }
                                         if (borrar) {
